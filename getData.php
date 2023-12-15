@@ -37,5 +37,4 @@ $statusIdFromProspects = array("data" => $data);
 
 header('Content-Type: application/json');
 echo json_encode($statusIdFromProspects);
-echo "hello world"
 ?>

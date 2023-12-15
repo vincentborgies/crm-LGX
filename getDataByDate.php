@@ -1,6 +1,9 @@
 <?php
-require_once('../header.php');
-require_once('../db.php');
+require_once('header.php');
+require_once('db.php');
+
+$start_date = $_POST['start_date'];
+$end_date = $_POST['end_date'];
 
 $queryPeriod = " AND `date` BETWEEN '$start_date' AND '$end_date'";
 $selectTable = "historique_modif_statut";
