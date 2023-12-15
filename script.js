@@ -1,3 +1,5 @@
+let chart;
+
 async function fetchData(stats) {
     try {
         const response = await fetch(`http://cda-php/graphique/${stats}`)
@@ -7,10 +9,10 @@ async function fetchData(stats) {
         const data = await response.json()
         const labels = data.data.map((item) => item.name)
         const number = data.data.map((item) => item.number)
-
+        
         const backgroundColors = generateRandomColors(data.data.length) // Appel à la fonction pour générer des couleurs aléatoires pour chaque barre
         const ctx = document.getElementById('statistics')
-        new Chart(ctx, {
+        chart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels,
@@ -38,15 +40,15 @@ function generateRandomColors(count) {
     return colors
 }
 
-$(document).ready(function () {})
+$(document).ready(function () {
+    fetchData('getData.php')
+})
 
 $('#dateForm').submit(function (event) {
     event.preventDefault() // Prevent the default form submission
 
     var startDate = $('#start_date').val()
     var endDate = $('#end_date').val()
-
-    console.log('ici')
 
     // Perform validation as needed
     if (startDate && endDate && startDate > endDate) {
@@ -58,9 +60,29 @@ $('#dateForm').submit(function (event) {
         url: 'getDataByDate.php',
         method: 'POST',
         dataType: 'json', // 'json' doit être une chaîne de caractères
-        data: { startDate: startDate, endDate: endDate },
+        data: { start_date: startDate, end_date: endDate },
         success: function (data) {
-            console.log(data)
+            console.log(data.data)
+            const labels = data.data.map((item) => item.name)
+            const number = data.data.map((item) => item.number)
+            const ctx = document.getElementById('statistics')
+            const backgroundColors = generateRandomColors(data.data.length)
+
+            chart.destroy();
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Acquisitions by year',
+                            data: number,
+                            backgroundColor: backgroundColors // Utilisation des couleurs aléatoires
+                        }
+                    ]
+                }
+            })
         }
     })
 })
