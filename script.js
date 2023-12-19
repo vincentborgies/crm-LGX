@@ -1,4 +1,5 @@
 let chart;
+const containCards = document.getElementById('contain-cards')
 
 async function fetchData(stats) {
     try {
@@ -9,6 +10,25 @@ async function fetchData(stats) {
         const data = await response.json()
         const labels = data.data.map((item) => item.name)
         const number = data.data.map((item) => item.number)
+
+        data.data.forEach(item => {
+            const card = document.createElement("div.card")
+            card.innerHTML = `<div class="col-xl-3 col-sm-6">
+            <div class="card-body">
+                <div class="icon-container">
+                    <i class="fa-solid fa-handshake icon"></i>
+                </div>                        
+                <div class="data">
+                    <h5 class="card-title">${item.name}</h5> 
+                    <h3 class="count">${item.number}</h3>                
+                </div>
+            </div>
+            </div>`
+            containCards.append(card)
+
+        });
+
+
         
         const backgroundColors = generateRandomColors(data.data.length) // Appel à la fonction pour générer des couleurs aléatoires pour chaque barre
         const ctx = document.getElementById('statistics')
