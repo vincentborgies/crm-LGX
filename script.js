@@ -11,24 +11,43 @@ function updateChartData(chartName, response) {
     chartName.update()
 }
 
-
 async function fetchData(stats) {
     try {
-        const response = await fetch(`http://cda-php/graphique/${stats}`)
+        const response = await fetch(`http://cda-php/crm-LGX/${stats}`)
         if (!response.ok) {
             throw new Error(`Erreur HTTP : ${response.status}`)
         }
         const data = await response.json()
+
+        const icons = [
+            'fa-solid fa-phone icon',
+            'fa-solid fa-handshake icon',
+            'fa-solid fa-users icon',
+            'fa-solid fa-file-signature icon',
+            'fa-solid fa-file-circle-check icon',
+            'fa-solid fa-users-gear icon',
+            'fa-solid fa-user-graduate icon',
+            'fa-solid fa-text-slash icon',
+            'fa-solid fa-handshake-slash icon',
+            'fa-solid fa-file-circle-xmark icon',
+            'fa-solid fa-x icon'
+        ]
+
+        const dataWithIcons = data.data.map((item, index) => {
+            return { ...item, icon: icons[index] }
+        })
         const labels = data.data.map((item) => item.name)
         const number = data.data.map((item) => item.number)
 
-        data.data.forEach((item) => {
+        dataWithIcons.forEach((item) => {
+            console.log(item.icon)
             const card = document.createElement('div')
             card.className = 'col-xl-3 col-sm-6'
             card.innerHTML = `<div class="card">
             <div class="card-body">
                 <div class="icon-container">
-                    <i class="fa-solid fa-handshake icon"></i>
+                    <i class="fas ${item.icon}"></i>
+
                 </div>                        
                 <div class="data">
                     <h5 class="card-title">${item.name}</h5> 
@@ -47,8 +66,9 @@ async function fetchData(stats) {
                 labels,
                 datasets: [
                     {
-                        label: 'Acquisitions by year',
+                        label: 'Nombre de prospects',
                         data: number,
+                        borderColor: '#fff',
                         backgroundColor: backgroundColors // Utilisation des couleurs aléatoires
                     }
                 ]
@@ -57,6 +77,21 @@ async function fetchData(stats) {
                 plugins: {
                     legend: {
                         display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white',
+                            weight: 'bold'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white',
+                            weight: 'bold'
+                        }
                     }
                 }
             }
@@ -101,7 +136,6 @@ $('#dateForm').submit(function (event) {
         success: function (data) {
             console.log(data.data)
             const number = data.data.map((item) => item.number)
-
 
             updateChartData(chart, number)
         },

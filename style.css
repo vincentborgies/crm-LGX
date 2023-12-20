@@ -1,7 +1,8 @@
 #container-stats {
-    margin: 40px;
     display: flex;
     justify-content: center;
+    position: relative;
+    height: 60vh;
 }
 
 * {
@@ -46,10 +47,10 @@ h2 {
     text-align: center;
 }
 
-#start-date-label, #end-date-label{
-    color: #fff
+#start-date-label,
+#end-date-label {
+    color: #fff;
 }
-
 
 .sidebar img {
     width: 65%;
@@ -85,7 +86,7 @@ h2 {
 
 #dateForm {
     margin-top: 100px;
-    margin-bottom: 50px;
+    margin-bottom: 100px;
 }
 
 #navbar {
@@ -114,7 +115,7 @@ li {
 }
 
 #contain-cards {
-    margin-top: 150px;
+    margin-top: 50px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -125,8 +126,8 @@ li {
     margin-bottom: 10px;
     border-radius: 10px;
     background: #ffffff;
-    margin-right:8px;
-    margin-left:8px
+    margin-right: 8px;
+    margin-left: 8px;
 }
 
 .card:hover {
@@ -146,6 +147,12 @@ li {
     align-items: center;
 }
 
-.count{
+.count {
     text-align: right;
+}
+
+@media screen and (min-width: 1200px) {
+    #content {
+        padding-bottom: 50px;
+    }
 }
