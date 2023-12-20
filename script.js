@@ -1,5 +1,16 @@
-let chart;
+let chart
 const containCards = document.getElementById('contain-cards')
+
+function updateChartData(chartName, response) {
+    console.log('Avant la mise à jour', chartName.data.datasets[0].data)
+    chartName.data.datasets[0].data = []
+    chartName.data.datasets[0].data = response
+
+    console.log('Après la mise à jour', chartName.data.datasets[0].data)
+
+    chartName.update()
+}
+
 
 async function fetchData(stats) {
     try {
@@ -11,9 +22,10 @@ async function fetchData(stats) {
         const labels = data.data.map((item) => item.name)
         const number = data.data.map((item) => item.number)
 
-        data.data.forEach(item => {
-            const card = document.createElement("div.card")
-            card.innerHTML = `<div class="col-xl-3 col-sm-6">
+        data.data.forEach((item) => {
+            const card = document.createElement('div')
+            card.className = 'col-xl-3 col-sm-6'
+            card.innerHTML = `<div class="card">
             <div class="card-body">
                 <div class="icon-container">
                     <i class="fa-solid fa-handshake icon"></i>
@@ -25,11 +37,8 @@ async function fetchData(stats) {
             </div>
             </div>`
             containCards.append(card)
+        })
 
-        });
-
-
-        
         const backgroundColors = generateRandomColors(data.data.length) // Appel à la fonction pour générer des couleurs aléatoires pour chaque barre
         const ctx = document.getElementById('statistics')
         chart = new Chart(ctx, {
@@ -43,6 +52,13 @@ async function fetchData(stats) {
                         backgroundColor: backgroundColors // Utilisation des couleurs aléatoires
                     }
                 ]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
             }
         })
     } catch (error) {
@@ -72,6 +88,7 @@ $('#dateForm').submit(function (event) {
 
     // Perform validation as needed
     if (startDate && endDate && startDate > endDate) {
+        console.log('error')
         toastr.error('La date de début doit être avant la date de fin', 'Erreur')
         return false // Prevent form submission
     }
@@ -83,26 +100,13 @@ $('#dateForm').submit(function (event) {
         data: { start_date: startDate, end_date: endDate },
         success: function (data) {
             console.log(data.data)
-            const labels = data.data.map((item) => item.name)
             const number = data.data.map((item) => item.number)
-            const ctx = document.getElementById('statistics')
-            const backgroundColors = generateRandomColors(data.data.length)
 
-            chart.destroy();
 
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [
-                        {
-                            label: 'Acquisitions by year',
-                            data: number,
-                            backgroundColor: backgroundColors // Utilisation des couleurs aléatoires
-                        }
-                    ]
-                }
-            })
+            updateChartData(chart, number)
+        },
+        error: function (xhr, status, error) {
+            console.log('Response Data:', error)
         }
     })
 })

@@ -41,8 +41,8 @@ foreach ($queries as $nom => $requete) {
 $conn->close();
 
 // Create a final array with the results
-$statusIdFromProspects = array("data" => $data);
+$countByDate = array("data" => $data);
 
 header('Content-Type: application/json');
-echo json_encode($statusIdFromProspects);
+echo json_encode($countByDate);
 ?>
