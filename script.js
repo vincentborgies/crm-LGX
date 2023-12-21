@@ -65,7 +65,6 @@ async function fetchData(stats) {
             containCards.append(card)
         })
 
-        const backgroundColors = generateRandomColors(data.data.length) // Appel à la fonction pour générer des couleurs aléatoires pour chaque barre
         const ctx = document.getElementById('statistics')
         chart = new Chart(ctx, {
             type: 'bar',
@@ -75,8 +74,19 @@ async function fetchData(stats) {
                     {
                         label: 'Nombre de prospects',
                         data: number,
-                        borderColor: '#fff',
-                        backgroundColor: backgroundColors // Utilisation des couleurs aléatoires
+                        backgroundColor: [
+                            'rgba(8, 63, 240, 0.8)',
+                            'rgba(0, 157, 255, 0.8)',
+                            'rgba(255, 190, 0, 0.8)',
+                            'rgba(250, 124, 23, 0.8)',
+                            'rgba(42, 167, 22, 0.8)',
+                            'rgba(42, 167, 121, 0.8)',
+                            'rgba(144, 41, 166, 0.8)',
+                            'rgba(255, 0, 0, 0.8)',
+                            'rgba(201, 0, 49, 1)',
+                            'rgba(174, 0, 49, 1)',
+                            'rgba(147, 5, 45, 1)'
+                        ] // Utilisation des couleurs aléatoires
                     }
                 ]
             },
@@ -106,16 +116,6 @@ async function fetchData(stats) {
     } catch (error) {
         console.error('Erreur lors de la récupération des données:', error)
     }
-}
-
-// Fonction pour générer des couleurs aléatoires
-function generateRandomColors(count) {
-    const colors = []
-    for (let i = 0; i < count; i++) {
-        const randomColor = `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},0.6)`
-        colors.push(randomColor)
-    }
-    return colors
 }
 
 $(document).ready(function () {
