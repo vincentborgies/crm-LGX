@@ -100,14 +100,19 @@ async function fetchData(stats) {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            color: 'white',
-                            weight: 'bold'
+                            font: {
+                                size: 18,
+                                wieight: 'bold' // Définissez la taille de la police pour l'axe des abscisses
+                            },
+                            color: 'white'
                         }
                     },
                     x: {
                         ticks: {
-                            color: 'white',
-                            weight: 'bold'
+                            font: {
+                                size: 18,
+                            },
+                            color: 'white'
                         }
                     }
                 }
