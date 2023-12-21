@@ -1,5 +1,10 @@
-let chart
 const containCards = document.getElementById('contain-cards')
+const returnButton = document.getElementById('return')
+const startDate = document.getElementById('start_date')
+const endDate = document.getElementById('end_date')
+
+let initialDatas
+let chart
 
 function updateChartData(chartName, response) {
     console.log('Avant la mise à jour', chartName.data.datasets[0].data)
@@ -38,6 +43,8 @@ async function fetchData(stats) {
         })
         const labels = data.data.map((item) => item.name)
         const number = data.data.map((item) => item.number)
+
+        initialDatas = number
 
         dataWithIcons.forEach((item) => {
             console.log(item.icon)
@@ -117,7 +124,6 @@ $(document).ready(function () {
 
 $('#dateForm').submit(function (event) {
     event.preventDefault() // Prevent the default form submission
-
     var startDate = $('#start_date').val()
     var endDate = $('#end_date').val()
 
@@ -138,11 +144,20 @@ $('#dateForm').submit(function (event) {
             const number = data.data.map((item) => item.number)
 
             updateChartData(chart, number)
+            returnButton.style.display = 'block'
         },
         error: function (xhr, status, error) {
             console.log('Response Data:', error)
         }
     })
+})
+
+returnButton.addEventListener('click', (e) => {
+    e.preventDefault
+    updateChartData(chart, initialDatas)
+    startDate.value = ''
+    endDate.value = ''
+    returnButton.style.display = 'none'
 })
 
 toastr.options = {
